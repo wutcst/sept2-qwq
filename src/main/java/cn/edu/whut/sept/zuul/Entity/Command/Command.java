@@ -1,4 +1,4 @@
-package cn.edu.whut.sept.zuul.POJO.Command;
+package cn.edu.whut.sept.zuul.Entity.Command;
 
 public class Command
 {

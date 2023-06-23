@@ -1,4 +1,4 @@
-package cn.edu.whut.sept.zuul.POJO;
+package cn.edu.whut.sept.zuul.Entity;
 
 import java.util.ArrayList;
 import java.util.Set;

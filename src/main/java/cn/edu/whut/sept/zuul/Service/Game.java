@@ -15,11 +15,11 @@
  */
 package cn.edu.whut.sept.zuul.Service;
 
-import cn.edu.whut.sept.zuul.POJO.Command.Command;
-import cn.edu.whut.sept.zuul.POJO.Command.Parser;
-import cn.edu.whut.sept.zuul.POJO.Player;
-import cn.edu.whut.sept.zuul.POJO.Room;
-import cn.edu.whut.sept.zuul.POJO.Things;
+import cn.edu.whut.sept.zuul.Entity.Command.Command;
+import cn.edu.whut.sept.zuul.Entity.Command.Parser;
+import cn.edu.whut.sept.zuul.Entity.Player;
+import cn.edu.whut.sept.zuul.Entity.Room;
+import cn.edu.whut.sept.zuul.Entity.Things;
 import cn.edu.whut.sept.zuul.util.DBUtil;
 
 import java.io.BufferedReader;

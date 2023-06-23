@@ -1,12 +1,22 @@
-package cn.edu.whut.sept.zuul.POJO;
+package cn.edu.whut.sept.zuul.Entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Player {
-    private int limitWeight, currentWeight;
-    private String name;
-    private int currentRoomId;
-    private ArrayList<Things> ownThings;
+    private int limitWeight; //最大承载量
+    private int currentWeight;//现有负载量
+    private String name; //姓名
+    private int currentRoomId; //当前所处房间id
+    private ArrayList<Things> ownThings; //背包物品
 
     public Player(int limitWeight, String name, int currentRoomId) {
         this.limitWeight = limitWeight;
@@ -16,28 +26,12 @@ public class Player {
         currentWeight = 0;
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public int getLimitWeight() {
-        return limitWeight;
-    }
-
-    public int getCurrentRoomId() {
-        return currentRoomId;
-    }
-
     /**
      * 增加负重
      * @param x 增加负重量
      */
     public void updateLimitWeight(int x){this.limitWeight += x;}
 
-    public void setCurrentRoomId(int currentRoomId) {
-        this.currentRoomId = currentRoomId;
-    }
 
     /**
      * 显示玩家所拥有的的物品项目
