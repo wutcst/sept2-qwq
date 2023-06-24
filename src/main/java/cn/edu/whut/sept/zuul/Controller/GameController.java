@@ -93,25 +93,25 @@ public class GameController {
      * @return
      */
 
-    @GetMapping("/go/{direction}")
+    @GetMapping("/player/go/{direction}")
     @ResponseBody
     public StatusResponse move(@PathVariable("direction") String direction) {
         return playerService.move(direction);
     }
 
-    @RequestMapping("/back")
+    @RequestMapping("/player/back")
     @ResponseBody
     public StatusResponse back() {
         return playerService.back();
     }
 
-    @RequestMapping("/take/{id}")
+    @RequestMapping("/player/take/{id}")
     @ResponseBody
     public StatusResponse take(@PathVariable("id") int id){
         return playerService.takeItem(id);
     }
 
-    @RequestMapping("/drop/{id}")
+    @RequestMapping("/player/drop/{id}")
     @ResponseBody
     public StatusResponse drop(@PathVariable("id") int id){
         return playerService.dropItem(id);

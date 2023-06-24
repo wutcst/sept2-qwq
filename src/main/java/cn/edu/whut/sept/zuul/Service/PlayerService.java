@@ -189,6 +189,12 @@ public class PlayerService {
         player.setCurrentRoomId(pathStore.drawPath());
         return new StatusResponse(Status.Success);
     }
+
+    /**
+     * 吃东西
+     * @param id 物品id
+     * @return 状态码
+     */
     public StatusResponse eat(int id){
         PlayerEntity player = playerStore.getPlayerEntity();
 
