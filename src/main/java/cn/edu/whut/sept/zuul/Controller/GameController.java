@@ -36,12 +36,11 @@ public class GameController {
     public List<GetPlayerInfoResponse> getPlayerInfo() {
         return playerService.getPlayerInfo();
     }
-
     /**
      * 登录
      * @param name 名称
      * @param password 密码
-     * @return id -1
+     * @return id/-1
      */
 
     @GetMapping("/player/Login")

@@ -34,7 +34,7 @@ public class RoomService {
         RoomEntity pub = new RoomEntity(roomStore.getNextId(), "pub", "你在大学酒吧中",new Pair(-1,0));
         RoomEntity lab = new RoomEntity(roomStore.getNextId(), "lab", "你在实验室中",new Pair(0,-1));
         RoomEntity office = new RoomEntity(roomStore.getNextId(), "office", "你在计算机办公室中，找肖建波聊聊吧",new Pair(1,-1));
-        RoomEntity library = new RoomEntity(roomStore.getNextId(), "library", "in the school's library",new Pair(-1,1));
+        RoomEntity library = new RoomEntity(roomStore.getNextId(), "library", "你在学校图书馆中",new Pair(-1,1));
         RoomEntity magic = new RoomEntity(roomStore.getNextId(), "magic", "一个魔法房间，你可以从这里传送到任意你想去的位置",new Pair(1,1));
 
         outside.getExitRoomIdMap().put("east", theater.getId());
