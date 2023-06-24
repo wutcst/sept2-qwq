@@ -34,6 +34,7 @@ public class GameController {
     @GetMapping("/player")
     @ResponseBody
     public List<GetPlayerInfoResponse> getPlayerInfo() {
+        log.info("获取玩家信息");
         return playerService.getPlayerInfo();
     }
     /**
@@ -46,6 +47,7 @@ public class GameController {
     @GetMapping("/player/Login")
     @ResponseBody
     public String login(String name ,String password){
+        log.info("玩家登录");
         return playerService.userlogin(name, password);
     }
 
@@ -56,11 +58,13 @@ public class GameController {
     @GetMapping("/player/items")
     @ResponseBody
     public List<ItemEntity> getItemsOfPlayer() {
+        log.info("获取玩家物品");
         return playerService.getItems();
     }
     @GetMapping("/room/getAll")
     @ResponseBody
     public List<RoomEntity> getAllRooms(){
+        log.info("获取房间信息");
         return roomService.getAllRooms();
     }
 
@@ -72,6 +76,7 @@ public class GameController {
     @GetMapping("/room/{id}")
     @ResponseBody
     public GetRoomInfoResponse getRoomInfo(@PathVariable("id") int id) {
+        log.info("获取某个房间信息");
         return roomService.getRoomInfo(id);
     }
 
@@ -83,6 +88,7 @@ public class GameController {
     @GetMapping("/room/{id}/look")
     @ResponseBody
     public List<ItemEntity> getItemsInRoom(@PathVariable("id") int id) {
+        log.info("获取某房间内物品");
         return roomService.getItemsInRoom(id);
     }
 
@@ -95,24 +101,28 @@ public class GameController {
     @GetMapping("/player/go/{direction}")
     @ResponseBody
     public StatusResponse move(@PathVariable("direction") String direction) {
+        log.info("获取玩家信息");
         return playerService.move(direction);
     }
 
     @RequestMapping("/player/back")
     @ResponseBody
     public StatusResponse back() {
+        log.info("回退");
         return playerService.back();
     }
 
     @RequestMapping("/player/take/{id}")
     @ResponseBody
     public StatusResponse take(@PathVariable("id") int id){
+        log.info("抓取物品");
         return playerService.takeItem(id);
     }
 
     @RequestMapping("/player/drop/{id}")
     @ResponseBody
     public StatusResponse drop(@PathVariable("id") int id){
+        log.info("丢弃物品");
         return playerService.dropItem(id);
     }
 
@@ -124,6 +134,7 @@ public class GameController {
     @RequestMapping("/player/eat/{id}")
     @ResponseBody
     public StatusResponse eat(@PathVariable("id") int id){
+        log.info("吃掉物品");
         return playerService.eat(id);
     }
     /**

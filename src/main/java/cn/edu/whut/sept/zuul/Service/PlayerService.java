@@ -42,6 +42,7 @@ public class PlayerService {
      * @return 当前玩家的重量
      */
     public double getCurrentCarryWeight() {
+
         PlayerEntity player = playerStore.getPlayerEntity();
 
         List<ItemEntity> items = itemStore.getItemsByOwner(ownerTypePlayer, player.getId());
