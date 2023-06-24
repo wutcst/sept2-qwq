@@ -40,7 +40,7 @@ public class RoomService {
         outside.getExitRoomIdMap().put("east", theater.getId());
         outside.getExitRoomIdMap().put("south", lab.getId());
         outside.getExitRoomIdMap().put("west", pub.getId());
-        outside.getExitRoomIdMap().put("north", 0);
+        //outside.getExitRoomIdMap().put("north", 0);
 
         theater.getExitRoomIdMap().put("west", outside.getId());
         theater.getExitRoomIdMap().put("south", office.getId());

@@ -1,7 +1,5 @@
 package cn.edu.whut.sept.zuul.Controller;
 
-
-import cn.edu.whut.sept.zuul.Database.RoomStore;
 import cn.edu.whut.sept.zuul.Entity.ItemEntity;
 import cn.edu.whut.sept.zuul.Entity.RoomEntity;
 import cn.edu.whut.sept.zuul.Model.GetPlayerInfoResponse;
@@ -46,8 +44,8 @@ public class GameController {
 
     @GetMapping("/player/Login")
     @ResponseBody
-    public String login(String name ,String password){
-        log.info("玩家登录");
+    public StatusResponse login(String name ,String password){
+        log.info("玩家登录"+name+" "+password);
         return playerService.userlogin(name, password);
     }
 
@@ -144,5 +142,10 @@ public class GameController {
     @ResponseBody
     public String quit(){
         return "退出系统！";
+    }
+    @RequestMapping("/player/currentWeight")
+    @ResponseBody
+    public double getCurrentWeight(){
+        return playerService.getCurrentCarryWeight();
     }
 }

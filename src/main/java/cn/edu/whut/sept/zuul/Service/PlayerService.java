@@ -59,14 +59,14 @@ public class PlayerService {
      * 获取玩家用户名密码
      * @return 有就是id，没有就是-1
      */
-    public String userlogin(String username,String password) {
+    public StatusResponse userlogin(String username,String password) {
         PlayerEntity player = playerStore.getPlayerEntity();
         if (Objects.equals(username, player.getName())
                 && Objects.equals(password, player.getPassword())){
-            return String.valueOf(player.getId());
+            return new StatusResponse(Status.Success);
         }
         else
-            return "-1";
+            return new StatusResponse("失败");
     }
 
     /**
@@ -198,15 +198,19 @@ public class PlayerService {
      */
     public StatusResponse eat(int id){
         PlayerEntity player = playerStore.getPlayerEntity();
-
-        if(itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).contains(itemStore.getItem(id))){
+        ItemEntity item = itemStore.getItem(id);
+        if(itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).contains(item)){
             if (itemStore.getItem(id).getEatable()==1&&id==6){
                 player.setMaxCarryWeight(player.getMaxCarryWeight()+20);
-                itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).remove(itemStore.getItem(id));
-                return new StatusResponse(Status.EatCookie);
+                //itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).remove(item);
+                item.setOwnerType(ownerTypeRoom);
+                item.setOwnerId(-1);
+                return new StatusResponse(Status.EatSuccess);
             }
             else if(id!=6&&itemStore.getItem(id).getEatable()==1){
-                itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).remove(itemStore.getItem(id));
+                //itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).remove(item);
+                item.setOwnerType(ownerTypeRoom);
+                item.setOwnerId(-1);
                 return new StatusResponse(Status.EatSuccess);
             }
             else
