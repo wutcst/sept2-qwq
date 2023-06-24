@@ -201,9 +201,11 @@ public class PlayerService {
         if(itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).contains(itemStore.getItem(id))){
             if (itemStore.getItem(id).getEatable()==1&&id==6){
                 player.setMaxCarryWeight(player.getMaxCarryWeight()+20);
+                itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).remove(itemStore.getItem(id));
                 return new StatusResponse(Status.EatCookie);
             }
             else if(id!=6&&itemStore.getItem(id).getEatable()==1){
+                itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).remove(itemStore.getItem(id));
                 return new StatusResponse(Status.EatSuccess);
             }
             else
