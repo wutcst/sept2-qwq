@@ -1,6 +1,7 @@
 package cn.edu.whut.sept.zuul.Controller;
 
 
+import cn.edu.whut.sept.zuul.Database.RoomStore;
 import cn.edu.whut.sept.zuul.Entity.ItemEntity;
 import cn.edu.whut.sept.zuul.Entity.RoomEntity;
 import cn.edu.whut.sept.zuul.Model.GetPlayerInfoResponse;
@@ -56,7 +57,11 @@ public class GameController {
     public List<ItemEntity> getItemsOfPlayer() {
         return playerService.getItems();
     }
-
+    @GetMapping("/room/getAll")
+    @ResponseBody
+    public List<RoomEntity> getAllRooms(){
+        return roomService.getAllRooms();
+    }
 
     /**
      * 查询某个房间的信息

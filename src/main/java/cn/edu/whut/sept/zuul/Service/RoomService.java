@@ -17,14 +17,17 @@ public class RoomService {
     private final RoomStore roomStore;
 
     private final ItemStore itemStore;
+
+    private final List<RoomEntity> roomList;
     /**
      * 生成房间和房间里的物品
      * @param roomStore 存储房间
      * @param itemStore 存储物品
      */
-    public RoomService(RoomStore roomStore, ItemStore itemStore) {
+    public RoomService(RoomStore roomStore, ItemStore itemStore,List<RoomEntity> rooms) {
         this.roomStore = roomStore;
         this.itemStore = itemStore;
+        this.roomList = rooms;
 
         RoomEntity outside = new RoomEntity(roomStore.getNextId(), "outside", "你在大学的入口处",new Pair(0,0));
         RoomEntity theater = new RoomEntity(roomStore.getNextId(), "theater", "你在电影院中",new Pair(1,0));
@@ -71,6 +74,14 @@ public class RoomService {
         itemStore.addItem(new ItemEntity(0, "book", 20, ownerTypeRoom, library.getId()));
         itemStore.addItem(new ItemEntity(0, "cookie", 5, ownerTypeRoom, lab.getId()));
         itemStore.addItem(new ItemEntity(0, "computer", 80, ownerTypeRoom, lab.getId()));
+
+        roomList.add(outside);
+        roomList.add(theater);
+        roomList.add(pub);
+        roomList.add(lab);
+        roomList.add(office);
+        roomList.add(library);
+        roomList.add(magic);
     }
 
     /**
@@ -95,6 +106,10 @@ public class RoomService {
      */
     public List<ItemEntity> getItemsInRoom(int roomId) {
         return itemStore.getItemsByOwner(ownerTypeRoom, roomId);
+    }
+
+    public List<RoomEntity> getAllRooms(){
+        return roomList;
     }
 
 }
