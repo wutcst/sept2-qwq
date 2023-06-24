@@ -1,18 +1,25 @@
 package cn.edu.whut.sept.zuul.Entity;
 
+import cn.edu.whut.sept.zuul.util.PairUtil;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
 
-public class Room
-{
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Room {
     private int id;
     private String description;
     private HashMap<String, Room> exits;
-
     private ArrayList<Things> staff;
     private int trap;
     private boolean magicCookie;
+    private PairUtil location;
     private static int cnt = 0;
 
     public Room(String description, int trap)
@@ -58,8 +65,7 @@ public class Room
     public void addStaff(Things item) {staff.add(item);}
 
 
-    public String getLongDescription()
-    {
+    public String getLongDescription() {
         return "You are " + description + ".\n" + getExitString();
     }
 
@@ -67,8 +73,7 @@ public class Room
      * 获取相邻方向有房间的所有方向
      * @return 返回一个包含所有相邻方向有房间的方向
      */
-    private String getExitString()
-    {
+    private String getExitString() {
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
         for(String exit : keys) {

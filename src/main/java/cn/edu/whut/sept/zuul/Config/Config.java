@@ -10,7 +10,7 @@ public class Config {
         try {
             p = new Properties();
             //加载配置类
-            p.load(new FileInputStream("src/cn/edu/whut/sept/zuul/Properties/mysql.properties"));
+            p.load(new FileInputStream("src/main/java/cn/edu/whut/sept/zuul/Properties/mysql.properties"));
         } catch (Exception e) {
             e.printStackTrace();
         }

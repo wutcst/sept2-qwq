@@ -13,7 +13,7 @@
  * @author  YJR
  * @version 1.0
  */
-package cn.edu.whut.sept.zuul.Service;
+package cn.edu.whut.sept.zuul;
 
 import cn.edu.whut.sept.zuul.Entity.Command.Command;
 import cn.edu.whut.sept.zuul.Entity.Command.Parser;
@@ -21,6 +21,9 @@ import cn.edu.whut.sept.zuul.Entity.Player;
 import cn.edu.whut.sept.zuul.Entity.Room;
 import cn.edu.whut.sept.zuul.Entity.Things;
 import cn.edu.whut.sept.zuul.util.DBUtil;
+import cn.edu.whut.sept.zuul.util.PairUtil;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,6 +32,8 @@ import java.sql.ResultSet;
 import java.util.*;
 import java.util.function.Function;
 
+@Slf4j
+@Data
 public class Game
 {
     private Parser parser;
@@ -38,7 +43,7 @@ public class Game
     private Player nowPlayer;
     private int totalRoom ;
 
-
+    protected Properties p = new Properties();
     /**
      * 创建游戏并初始化内部数据和解析器.
      */
@@ -55,7 +60,7 @@ public class Game
      * @throws IOException
      */
     public void initMap() throws IOException {
-        FileReader fileReader = new FileReader("src/cn/edu/whut/sept/zuul/Properties/GameMap.txt");
+        FileReader fileReader = new FileReader("src/main/java/cn/edu/whut/sept/zuul/Properties/GameMap.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String s;
         s=bufferedReader.readLine();
@@ -106,32 +111,8 @@ public class Game
         System.out.print(">>");
         String input = new Scanner(System.in).nextLine();
         DBUtil db = new DBUtil();
-        try{
-            db.getConnection();
-            String sqlTest = "SELECT * FROM `user` WHERE userName='"+input+"'";
-            ResultSet rs = db.executeQuery(sqlTest,null);
-            if(rs.next()){
-                System.out.println("欢迎回来！");
-                this.nowPlayer = new Player(rs.getInt("capacity"),rs.getString("userName"),rs.getInt("nowRoomId"));
-            }else{
-                String save_user_sql = "call `save_user`(?,?,?,@res);";
-                Object[] param = new Object[] { input, 0, 1000};
-                if (db.executeUpdate(save_user_sql, param) > 0) {
-                    System.out.println("未检测到您的旧有账户，已为您创建新账户");
-                    this.nowPlayer = new Player(8, input, 1);
-                }
-                else{
-                    System.out.println("连接异常!");
-                }
-            }
-            this.currentRoom=idRoomMap.get(this.nowPlayer.getCurrentRoomId());
-            stack.add(this.currentRoom.getId());
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            db.closeAll();
-        }
-        play();
+        if (Objects.equals(input, "yjr"))
+            play();
     }
 
     /**
@@ -443,5 +424,8 @@ public class Game
             }
             return 1;  // signal that we want to quit
         }
+    }
+    private PairUtil getRoomLocationById(int id){
+        return idRoomMap.get(id).getLocation();
     }
 }

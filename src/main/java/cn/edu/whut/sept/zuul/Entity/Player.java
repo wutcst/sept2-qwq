@@ -1,5 +1,8 @@
 package cn.edu.whut.sept.zuul.Entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +13,15 @@ import java.util.ArrayList;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@TableName("Player")
 public class Player {
+    @TableId(type = IdType.AUTO)
+    private int user_id;
     private int limitWeight; //最大承载量
     private int currentWeight;//现有负载量
     private String name; //姓名
+
+    private String password;//用户密码
     private int currentRoomId; //当前所处房间id
     private ArrayList<Things> ownThings; //背包物品
 
