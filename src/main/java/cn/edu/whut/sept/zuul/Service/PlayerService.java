@@ -166,7 +166,7 @@ public class PlayerService {
 
         if (nextRoomId == 7) {
             nextRoomId = roomStore.getRandomRoomId();
-            status = "传送成功";
+            status = "成功";
         }
 
         pathStore.addPath(player.getCurrentRoomId());
