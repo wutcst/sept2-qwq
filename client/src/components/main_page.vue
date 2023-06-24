@@ -62,9 +62,67 @@
         </ul>
       </div>
       <br>
+      <!--
       <input id="enter_command" class="enter_command"  type="text" v-model="new_msg" placeholder="在这里输入你的命令">
       <button class="enter_click" @click="deal_msg">提交命令</button>
+      -->
       <br>
+
+      <div class="feature">
+        <button class="feature_btn" @click="btn('go')">
+          前往
+        </button>
+        <div v-show="isClick.go">
+          <button class="switch_item" v-for="(direction,index) in directions" @click="go(direction)">
+            {{direction}}
+            <br>
+          </button>
+        </div>
+      </div>
+
+      <div class="feature">
+        <button class="feature_btn" @click="back">
+          回退
+        </button>
+      </div>
+
+
+      <div class="feature">
+        <button class="feature_btn" @click="btn('eat')">
+          吃
+        </button>
+        <div v-show="isClick.eat">
+          <button class="switch_item" v-for="(item,index) in user_bag" @click="eat(item.name)">
+            {{item.name}}
+            <br>
+          </button>
+        </div>
+      </div>
+
+      <div class="feature">
+        <button class="feature_btn" @click="btn('take')">
+          拿取
+        </button>
+        <div v-show="isClick.take">
+          <button class="switch_item" v-for="(item,index) in room_items" @click="eat(item.name)">
+            {{item.name}}
+            <br>
+          </button>
+        </div>
+      </div>
+
+      <div class="feature">
+        <button class="feature_btn" @click="btn('drop')">
+          丢弃
+        </button>
+        <div v-show="isClick.drop">
+          <button class="switch_item" v-for="(item,index) in user_bag" @click="eat(item.name)">
+            {{item.name}}
+            <br>
+          </button>
+        </div>
+      </div>
+
     </div>
     <div class="author">
       <h4 style="text-align:left">Author:YJR SJ XZY</h4>
@@ -117,6 +175,15 @@ export default {
       position: {now_row: 0, now_column: 0},
       carry_ability:100,
       bag_total_weight:20,
+      isClick:{
+        eat: false,
+        take: false,
+        drop: false,
+        go: false,
+      },
+      directions:[
+          "south","east"
+      ]
     }
   },
   methods:{
@@ -133,11 +200,30 @@ export default {
         }
       }
     },
-    
+    btn(chs){
+      if(chs==="eat") this.isClick.eat=!this.isClick.eat;
+      if(chs==="take") this.isClick.take=!this.isClick.take;
+      if(chs==="drop") this.isClick.drop=!this.isClick.drop;
+      if(chs==="go") this.isClick.go=!this.isClick.go;
+    },
+    eat(name){
+      alert("eat "+name);
+    },
+    take(name){
+      alert("take "+name);
+    },
+    drop(name){
+      alert("drop "+name);
+    },
+    go(direction){
+      alert("go "+direction);
+    },
+    back(){
+      alert("back")
+    }
   }
 }
 </script>
-<!--@import '../src/assets/main_page.css';-->
 
 <style scoped>
 .body{
@@ -173,22 +259,6 @@ export default {
   border-color: black;
   border-width: 2px;
 }
-.enter_command{
-  height: 40px;
-  width: 300px;
-  border-radius: 5px;
-  border-color: black;
-  border-width: 2px;
-}
-.enter_click{
-  margin-top: 5px;
-  border:none;
-  background-color: dodgerblue;
-  height: 40px;
-  width: 100px;
-  border-radius: 5px;
-  margin-left: 20px;
-}
 
 .author{
   float: left;
@@ -200,5 +270,14 @@ export default {
   width: 60px;
 }
 
+.switch_item,
+.feature_btn{
+  margin-top: 5px;
+  border:none;
+  height: 40px;
+  width: 50px;
+  border-radius: 5px;
+  margin-left: 20px;
+}
 
 </style>
