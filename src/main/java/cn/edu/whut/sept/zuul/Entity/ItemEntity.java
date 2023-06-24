@@ -11,6 +11,8 @@ import lombok.Data;
 public class ItemEntity {
     private int id;
 
+    private String name;
+
     private String description;
 
     private double weight;
@@ -18,4 +20,6 @@ public class ItemEntity {
     private String ownerType;
 
     private int ownerId;
+
+    private int eatable; //是否可食用
 }

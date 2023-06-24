@@ -67,13 +67,13 @@ public class RoomService {
         roomStore.addRoom(library);
         roomStore.addRoom(magic);
 
-        itemStore.addItem(new ItemEntity(0, "apple", 10, ownerTypeRoom, outside.getId()));
-        itemStore.addItem(new ItemEntity(0, "DarkMatter", 65535, ownerTypeRoom, outside.getId()));
-        itemStore.addItem(new ItemEntity(0, "beer", 20, ownerTypeRoom, pub.getId()));
-        itemStore.addItem(new ItemEntity(0, "xjb", 200, ownerTypeRoom, office.getId()));
-        itemStore.addItem(new ItemEntity(0, "book", 20, ownerTypeRoom, library.getId()));
-        itemStore.addItem(new ItemEntity(0, "cookie", 5, ownerTypeRoom, lab.getId()));
-        itemStore.addItem(new ItemEntity(0, "computer", 80, ownerTypeRoom, lab.getId()));
+        itemStore.addItem(new ItemEntity(1, "apple","我是可以被吃掉的苹果", 10, ownerTypeRoom, outside.getId(),1));
+        itemStore.addItem(new ItemEntity(2, "DarkMatter","你能拿动这个说明你开挂了", 65535, ownerTypeRoom, outside.getId(),0));
+        itemStore.addItem(new ItemEntity(3, "beer", "一杯人畜无害的啤酒",20, ownerTypeRoom, pub.getId(),1));
+        itemStore.addItem(new ItemEntity(4, "xjb","是肖建波，快跑口牙！" ,200, ownerTypeRoom, office.getId(),0));
+        itemStore.addItem(new ItemEntity(5, "book","是一本书" ,20, ownerTypeRoom, library.getId(),0));
+        itemStore.addItem(new ItemEntity(6, "cookie","是魔法饼干，食用后+20最大承载力" ,5, ownerTypeRoom, lab.getId(),1));
+        itemStore.addItem(new ItemEntity(7, "computer", "是一个破旧不堪的电脑",80, ownerTypeRoom, lab.getId(),0));
 
         roomList.add(outside);
         roomList.add(theater);

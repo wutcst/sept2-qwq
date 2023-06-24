@@ -9,6 +9,7 @@ import cn.edu.whut.sept.zuul.Model.GetRoomInfoResponse;
 import cn.edu.whut.sept.zuul.Model.StatusResponse;
 import cn.edu.whut.sept.zuul.Service.PlayerService;
 import cn.edu.whut.sept.zuul.Service.RoomService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.List;
  *该类用于响应前后端请求
  */
 @Controller
+@Slf4j
 public class GameController {
     @Autowired
     RoomService roomService;
@@ -79,13 +81,19 @@ public class GameController {
      * @param id 房间编号
      * @return 物品列表
      */
-    @GetMapping("/room/{id}/items")
+    @GetMapping("/room/{id}/look")
     @ResponseBody
     public List<ItemEntity> getItemsInRoom(@PathVariable("id") int id) {
         return roomService.getItemsInRoom(id);
     }
 
-    @GetMapping("/move/{direction}")
+    /**
+     * 四向移动
+     * @param direction 东西南北
+     * @return
+     */
+
+    @GetMapping("/go/{direction}")
     @ResponseBody
     public StatusResponse move(@PathVariable("direction") String direction) {
         return playerService.move(direction);
@@ -108,5 +116,17 @@ public class GameController {
     public StatusResponse drop(@PathVariable("id") int id){
         return playerService.dropItem(id);
     }
-
+    /**
+     * 退出
+     */
+    @RequestMapping("/quit")
+    @ResponseBody
+    public String quit(){
+        return "quit";
+    }
+    @RequestMapping("/player/eat/{id}")
+    @ResponseBody
+    public String eat(@PathVariable("id") int id){
+        return "quit";
+    }
 }
