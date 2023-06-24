@@ -10,13 +10,13 @@
               v-for="column_j in columnIDs"
               align="center"
               :key="column_j.column_id"
-              :label="column_j.column_id">
+              :label="column_j.column_id.toString()">
             <template v-slot="scope">
               <span v-for="(i, index) in game_map" :key="index">
                 <span
-                    v-if="i && column_j.column_id === i.column_j &&  scope.row.row_id  === i.row_i"
+                    v-if="i && column_j.column_id === i.location.x &&  scope.row.row_id  === i.location.y"
                     style="margin-left: 10px">
-                  <span v-if="column_j.column_id===position.now_column && scope.row.row_id === position.now_row" style="color:red">
+                  <span v-if="i.id===cur_room_id" style="color:red">
                     <div>{{ i.name }}</div>
                   </span>
                   <span v-else>
@@ -52,20 +52,15 @@
           这里是之前的聊天内容展示，仅展示最近的八条操作/提示信息
           <li v-for="(msg,index) in messages" class="game_text">
             <span v-if="msg.type===0">
-              System-{{msg.id}}: {{msg.msg}}
+              System: {{msg.msg}}
               <br><br>
             </span>
             <span v-else>
-              You-{{msg.id}}: {{msg.msg}}
+              You: {{msg.msg}}
             </span>
           </li>
         </ul>
       </div>
-      <br>
-      <!--
-      <input id="enter_command" class="enter_command"  type="text" v-model="new_msg" placeholder="在这里输入你的命令">
-      <button class="enter_click" @click="deal_msg">提交命令</button>
-      -->
       <br>
 
       <div class="feature">
@@ -92,7 +87,7 @@
           吃
         </button>
         <div v-show="isClick.eat">
-          <button class="switch_item" v-for="(item,index) in user_bag" @click="eat(item.name)">
+          <button class="switch_item" v-for="(item,index) in user_bag" @click="eat(item.name,item.id)">
             {{item.name}}
             <br>
           </button>
@@ -104,7 +99,7 @@
           拿取
         </button>
         <div v-show="isClick.take">
-          <button class="switch_item" v-for="(item,index) in room_items" @click="eat(item.name)">
+          <button class="switch_item" v-for="(item,index) in room_items" @click="take(item.name,item.id)">
             {{item.name}}
             <br>
           </button>
@@ -116,7 +111,7 @@
           丢弃
         </button>
         <div v-show="isClick.drop">
-          <button class="switch_item" v-for="(item,index) in user_bag" @click="eat(item.name)">
+          <button class="switch_item" v-for="(item,index) in user_bag" @click="drop(item.name,item.id)">
             {{item.name}}
             <br>
           </button>
@@ -131,21 +126,28 @@
 </template>
 <script>
 
-import {isCancel} from "axios";
+import axios from "axios";
 
 export default {
+  created() {
+    axios({
+      method:'get',
+      url:'http://elasticsearch.natapp4.cc/room/getAll',
+    }).then((res)=>{
+      //console.log(res.data.data);
+      this.game_map=res.data;
+    });
+    this.update_weight();
+
+    this.update_position();
+    this.update_room_items();
+    this.update_user_bag();
+  },
   name: "main_page",
   data: function(){
     return {
+      user_id: 1,
       game_map: [
-        {id: 1, row_i: 0, column_j: 0, name: "出生点"},
-        {id: 2, row_i: 0, column_j: -1, name: "图书馆"},
-        {id: 3, row_i: 0, column_j: 1, name: "传送"},
-        {id: 4, row_i: 1, column_j: -1, name: "酒吧"},
-        {id: 5, row_i: 1, column_j: 0, name: "外边"},
-        {id: 6, row_i: 1, column_j: 1, name: "电影院"},
-        {id: 7, row_i: 2, column_j: 0, name: "实验室"},
-        {id: 8, row_i: 2, column_j: 1, name: "办公室"},
       ],
       user_bag: [
         {id: 1, name: "apple1", description: "this is an apple", weight: 10},
@@ -156,23 +158,22 @@ export default {
         {id: 2, name: "stone2", description: "this is a stone", weight: 10}
       ],
       messages: [
-        {id: 1, msg: "apple", type:1},
-        {id: 2, msg: "this is an apple", type:0}
+        {id: 1, msg: "Game Start", type:1},
+        {id: 2, msg: "Welcome to World of Zuue!", type:0}
       ],
-      new_msg: "",
       msg_num: 2,
       nextID: 3,
       rowIDs: [
-        {row_id: 0},
         {row_id: 1},
-        {row_id: 2}
+        {row_id: 0},
+        {row_id: -1}
       ],
       columnIDs: [
         {column_id: -1},
         {column_id: 0},
         {column_id: 1}
       ],
-      position: {now_row: 0, now_column: 0},
+      cur_room_id: 1,
       carry_ability:100,
       bag_total_weight:20,
       isClick:{
@@ -182,44 +183,152 @@ export default {
         go: false,
       },
       directions:[
-          "south","east"
+          "north","south"
       ]
     }
   },
   methods:{
-    deal_msg(){
-      if(this.new_msg !== ""){
-        this.messages.push({id:this.nextID,msg:this.new_msg,type:1})
-        this.nextID++
-        this.messages.push({id:this.nextID,msg:"answer",type:0})
-
-        this.new_msg=""
-        this.msg_num+=2
-        if(this.msg_num>16){
-          this.messages.splice(0,2)
-        }
-      }
-    },
     btn(chs){
       if(chs==="eat") this.isClick.eat=!this.isClick.eat;
       if(chs==="take") this.isClick.take=!this.isClick.take;
       if(chs==="drop") this.isClick.drop=!this.isClick.drop;
       if(chs==="go") this.isClick.go=!this.isClick.go;
     },
-    eat(name){
-      alert("eat "+name);
+    eat(name,id){
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player/eat/'+id,
+      }).then((res)=>{
+        this.push_msg("eat "+name,1);
+        if(res.data.status==="食用成功"){
+          this.push_msg("吃掉啦",0);
+          this.update_user_bag();
+          this.update_room_items();
+          this.update_weight();
+        }else{
+          this.push_msg(res.data.status,0);
+        }
+      });
     },
-    take(name){
-      alert("take "+name);
+    take(name,id){
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player/take/'+id,
+      }).then((res)=>{
+        this.push_msg("take "+name,1);
+        if(res.data.status==="成功"){
+          this.push_msg("拿到啦 ",0);
+          this.update_user_bag();
+          this.update_room_items();
+          this.update_weight();
+        }else{
+          this.push_msg(res.data.status,0);
+        }
+      });
     },
-    drop(name){
-      alert("drop "+name);
+    drop(name,id){
+      alert("drop "+id);
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player/drop/'+id,
+      }).then((res)=>{
+        this.push_msg("drop "+name,1);
+        if(res.data.status==="成功"){
+          this.push_msg("丢掉啦 ",0);
+          this.update_user_bag();
+          this.update_room_items();
+          this.update_weight();
+        }else{
+          this.push_msg(res.data.status,0);
+        }
+      });
     },
     go(direction){
-      alert("go "+direction);
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player/go/'+direction,
+      }).then((res)=>{
+        this.push_msg("go "+direction,1);
+        if (res.data.status==="成功"){
+          this.update_position();
+        }else{
+          this.push_msg(res.data.status,0);
+        }
+      });
     },
     back(){
-      alert("back")
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player/back',
+      }).then((res)=>{
+        this.push_msg("back",1);
+        if (res.data.status==="成功"){
+          this.update_position();
+          this.show_now_room();
+        }else {
+          this.push_msg(res.data.status,0);
+        }
+      });
+    },
+    update_position(){
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player',
+      }).then((res)=>{
+        this.cur_room_id=res.data[0].currentRoomId;
+        this.update_direction();
+        this.update_room_items();
+        this.show_now_room();
+      })
+    },
+    show_now_room(){
+      for(let i=0;i<this.game_map.length;i++){
+        if(this.game_map[i].id===this.cur_room_id){
+          this.push_msg(this.game_map[i].description,0);
+          break;
+        }
+      }
+    },
+    update_direction(){
+      for(let i=0;i<this.game_map.length;i++){
+        if(this.game_map[i].id===this.cur_room_id){
+          this.directions=Object.keys(this.game_map[i].exitRoomIdMap);
+          break;
+        }
+      }
+    },
+    update_room_items(){
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/room/'+this.cur_room_id+'/look',
+      }).then((res)=>{
+        this.room_items=res.data;
+      })
+    },
+    update_user_bag(){
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player/items',
+      }).then((res)=>{
+        this.user_bag=res.data;
+      })
+    },
+    push_msg(user_cmd,type){
+      this.messages.push({id:this.nextID,msg:user_cmd,type:type})
+      this.nextID++
+      this.msg_num++
+      if(this.msg_num>16){
+        this.messages.splice(0,1)
+      }
+    },
+    update_weight(){
+      axios({
+        method:'get',
+        url:'http://elasticsearch.natapp4.cc/player',
+      }).then((res)=>{
+        this.carry_ability=res.data[0].maxCarryWeight;
+        this.bag_total_weight=res.data[0].currentCarryWeight;
+      });
     }
   }
 }
