@@ -227,7 +227,6 @@ export default {
       });
     },
     drop(name,id){
-      alert("drop "+id);
       axios({
         method:'get',
         url:'http://elasticsearch.natapp4.cc/player/drop/'+id,
@@ -264,7 +263,6 @@ export default {
         this.push_msg("back",1);
         if (res.data.status==="成功"){
           this.update_position();
-          this.show_now_room();
         }else {
           this.push_msg(res.data.status,0);
         }
@@ -276,9 +274,9 @@ export default {
         url:'http://elasticsearch.natapp4.cc/player',
       }).then((res)=>{
         this.cur_room_id=res.data[0].currentRoomId;
+        this.show_now_room();
         this.update_direction();
         this.update_room_items();
-        this.show_now_room();
       })
     },
     show_now_room(){
