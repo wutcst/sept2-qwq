@@ -116,17 +116,23 @@ public class GameController {
     public StatusResponse drop(@PathVariable("id") int id){
         return playerService.dropItem(id);
     }
+
+    /**
+     *
+     * @param id 物品id
+     * @return 状态码
+     */
+    @RequestMapping("/player/eat/{id}")
+    @ResponseBody
+    public StatusResponse eat(@PathVariable("id") int id){
+        return playerService.eat(id);
+    }
     /**
      * 退出
      */
     @RequestMapping("/quit")
     @ResponseBody
     public String quit(){
-        return "quit";
-    }
-    @RequestMapping("/player/eat/{id}")
-    @ResponseBody
-    public String eat(@PathVariable("id") int id){
-        return "quit";
+        return "退出系统！";
     }
 }

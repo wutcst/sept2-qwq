@@ -189,4 +189,21 @@ public class PlayerService {
         player.setCurrentRoomId(pathStore.drawPath());
         return new StatusResponse(Status.Success);
     }
+    public StatusResponse eat(int id){
+        PlayerEntity player = playerStore.getPlayerEntity();
+
+        if(itemStore.getItemsByOwner(ownerTypePlayer, player.getId()).contains(itemStore.getItem(id))){
+            if (itemStore.getItem(id).getEatable()==1&&id==6){
+                player.setMaxCarryWeight(player.getMaxCarryWeight()+20);
+                return new StatusResponse(Status.EatCookie);
+            }
+            else if(id!=6&&itemStore.getItem(id).getEatable()==1){
+                return new StatusResponse(Status.EatSuccess);
+            }
+            else
+                return new StatusResponse(Status.EatFail);
+        }
+        else
+            return new StatusResponse(Status.EatFail);
+    }
 }

@@ -9,5 +9,8 @@ public class Status {
     static public final String NotCarry = "无法搬起";
     static public final String NoRoom = "没有该房间";
     static public final String NoPath = "无路可走！";
+    static public final String EatCookie="食用饼干成功，最大载荷+=20!";
+    static public final String EatSuccess="食用成功！";
+    static public final String EatFail="不能食用！";
 
 }

@@ -108,6 +108,10 @@ public class RoomService {
         return itemStore.getItemsByOwner(ownerTypeRoom, roomId);
     }
 
+    /**
+     * 所有房间
+     * @return 返回所有房间
+     */
     public List<RoomEntity> getAllRooms(){
         return roomList;
     }
